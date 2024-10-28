@@ -1,13 +1,22 @@
 import {
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 
 import "./tailwind.css";
+
+export const loader = ({ params } : LoaderFunctionArgs ) => {
+
+  return {
+    language: params.lang
+  }
+}
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -41,5 +50,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const loaderData = useLoaderData<typeof loader>();
+
+  return (
+    <div className={'container mx-auto p-8'}>
+      <div className='flex flex-row justify-between gap-4'>
+        <ul className={'flex flex-row '}>
+          <li>
+            <Link to={ loaderData.language ? `/${loaderData.language}/` : '/'}>Home</Link>
+          </li>
+          <li>
+            <Link to={loaderData.language ? `/${loaderData.language}/brands` : '/brands'}>Brands</Link>
+          </li>
+        </ul>
+        <ul className={'flex flex-row gap-2.5 text-2xl'}>
+          <li>
+            <Link to={'/'}>
+              🇺🇸
+            </Link>
+          </li>
+          <li>
+            <Link to={'/nl'}>
+              🇳🇱
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className={"container mx-auto pt-8"}>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
