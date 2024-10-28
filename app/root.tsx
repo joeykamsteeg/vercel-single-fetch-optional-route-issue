@@ -55,7 +55,7 @@ export default function App() {
   return (
     <div className={'container mx-auto p-8'}>
       <div className='flex flex-row justify-between gap-4'>
-        <ul className={'flex flex-row '}>
+        <ul className={'flex flex-row gap-2.5'}>
           <li>
             <Link to={ loaderData.language ? `/${loaderData.language}/` : '/'}>Home</Link>
           </li>
